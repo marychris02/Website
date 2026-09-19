@@ -1,0 +1,1023 @@
+/* =========================================================
+   COLOR VARIABLES
+   ========================================================= */
+:root {
+  --sage-blue: #7FA6A0;
+  --sage-blue-light: #A9C5C0;
+  --navy-blue: #1B2A4A;
+  --navy-blue-light: #2C3E63;
+  --off-white: #F5F7F7;
+  --white: #FFFFFF;
+  --text-dark: #1B2A4A;
+  --text-light: #F5F7F7;
+
+  /* Used only in the About section */
+  --sapphire: #0F52BA;
+  --sapphire-dark: #0A3A85;
+  --warm-taupe: #B8A99A;
+  --warm-taupe-light: #EFE8E1;
+
+  /* Used only in the Skills section — navy indigo + beige theme */
+  --beige: #C9B79C;
+  --beige-light: #F0E9DD;
+}
+
+/* =========================================================
+   RESET / BASE STYLES
+   ========================================================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--off-white);
+  color: var(--text-dark);
+  line-height: 1.6;
+}
+
+.section {
+  padding: 100px 8% 80px;
+  min-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Keeps dropdown link targets from hiding under the fixed navbar */
+#hobbies,
+#intro,
+#details,
+.work-card {
+  scroll-margin-top: 100px;
+}
+
+.section-title {
+  font-size: 2.2rem;
+  color: var(--navy-blue);
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.section-subtitle {
+  text-align: center;
+  color: var(--navy-blue-light);
+  margin-bottom: 50px;
+  font-weight: 300;
+}
+
+/* =========================================================
+   NAVIGATION BAR
+   ========================================================= */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 8%;
+  background-color: var(--navy-blue);
+  z-index: 1000;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+}
+
+.nav-brand {
+  color: var(--white);
+  font-size: 1.4rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 35px;
+  list-style: none;
+}
+
+.nav-links a {
+  color: var(--text-light);
+  text-decoration: none;
+  font-weight: 400;
+  font-size: 0.95rem;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: var(--sage-blue-light);
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  width: 0%;
+  height: 2px;
+  background-color: var(--sage-blue-light);
+  transition: width 0.3s ease;
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.hamburger span {
+  width: 25px;
+  height: 2px;
+  background-color: var(--white);
+}
+
+/* =========================================================
+   NAVBAR DROPDOWN MENUS
+   ========================================================= */
+
+/* Parent item — the menu is positioned relative to this */
+.dropdown {
+  position: relative;
+}
+
+/* The clickable button: styled to look like the other nav links */
+.dropdown-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: var(--text-light);
+  transition: color 0.3s ease;
+}
+
+.dropdown-btn:hover,
+.dropdown-btn[aria-expanded="true"] {
+  color: var(--sage-blue-light);
+}
+
+/* Same animated underline as the other nav links */
+.dropdown-btn::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  width: 0%;
+  height: 2px;
+  background-color: var(--sage-blue-light);
+  transition: width 0.3s ease;
+}
+
+.dropdown-btn:hover::after,
+.dropdown-btn[aria-expanded="true"]::after {
+  width: 100%;
+}
+
+.dropdown-arrow {
+  font-size: 0.6rem;
+}
+
+/* The menu — hidden until JavaScript adds the "show" class */
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 28px);
+  left: 0;
+  min-width: 200px;
+  list-style: none;
+  padding: 8px 0;
+  background-color: var(--navy-blue-light);
+  border: 1px solid rgba(169, 197, 192, 0.25);
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+  z-index: 1100;
+}
+
+.dropdown-menu.show {
+  display: block;
+  animation: dropdownFade 0.2s ease;
+}
+
+@keyframes dropdownFade {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.nav-links .dropdown-menu a {
+  display: block;
+  padding: 10px 22px;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.nav-links .dropdown-menu a:hover {
+  background-color: rgba(127, 166, 160, 0.18);
+  color: var(--sage-blue-light);
+}
+
+/* No sliding underline inside the dropdown — the hover background is enough */
+.nav-links .dropdown-menu a::after {
+  content: none;
+}
+
+/* Visible keyboard focus */
+.dropdown-btn:focus-visible,
+.nav-links .dropdown-menu a:focus-visible {
+  outline: 2px solid var(--sage-blue-light);
+  outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dropdown-menu.show {
+    animation: none;
+  }
+}
+
+/* =========================================================
+   HOME SECTION — editorial/magazine hero
+   ========================================================= */
+.home-section {
+  position: relative;
+  background-color: var(--navy-blue);
+  overflow: hidden;
+  padding: 0;
+  min-height: 100vh;
+  display: block;
+}
+
+.home-topbar {
+  position: absolute;
+  top: 95px;
+  left: 0;
+  width: 100%;
+  padding: 0 8%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 4;
+}
+
+.home-tag {
+  font-size: 0.78rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--sage-blue-light);
+  font-weight: 500;
+}
+
+.home-year {
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  color: var(--sage-blue-light);
+}
+
+.home-bigtitle {
+  position: absolute;
+  top: 75px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.12rem, 6.36vw, 4.44rem);
+  font-weight: 500;
+  letter-spacing: 6px;
+  color: var(--sage-blue-light);
+  z-index: 6;
+  margin: 0;
+}
+
+.profile-pic {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 52%;
+  max-width: 448px;
+  height: 80%;
+  object-fit: contain;
+  object-position: bottom center;
+  z-index: 7;
+}
+
+.home-leftblock {
+  position: absolute;
+  top: 275px;
+  left: 8%;
+  max-width: 300px;
+  z-index: 3;
+}
+
+.home-smalllabel {
+  font-size: 0.85rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--sage-blue);
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.home-roleheading {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.7rem;
+  font-weight: 600;
+  color: var(--text-light);
+  line-height: 1.25;
+  margin-bottom: 36px;
+}
+
+.home-desc {
+  font-size: 0.85rem;
+  font-weight: 300;
+  color: var(--sage-blue-light);
+  line-height: 1.6;
+  max-width: 270px;
+}
+
+.home-fullname {
+  position: absolute;
+  bottom: 60px;
+  left: 8%;
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.5rem, 2.8vw, 2.2rem);
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: var(--sage-blue-light);
+  line-height: 1.3;
+  z-index: 3;
+  margin: 0;
+}
+
+.home-badge {
+  position: absolute;
+  bottom: 55px;
+  right: 6%;
+  width: 84px;
+  height: 84px;
+  border: 1px solid var(--sage-blue-light);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+}
+
+.home-badge-letter {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  color: var(--sage-blue-light);
+}
+
+/* Buttons */
+.btn-primary {
+  display: inline-block;
+  background-color: var(--sage-blue);
+  color: var(--navy-blue);
+  padding: 12px 32px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: var(--sage-blue-light);
+  transform: translateY(-3px);
+}
+
+.btn-secondary {
+  display: inline-block;
+  background-color: transparent;
+  color: var(--sage-blue);
+  border: 2px solid var(--sage-blue);
+  padding: 8px 22px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background-color: var(--sage-blue);
+  color: var(--white);
+}
+
+.btn-outline {
+  display: inline-block;
+  background-color: transparent;
+  color: var(--sapphire);
+  border: 1.5px solid var(--sapphire);
+  padding: 12px 30px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.btn-outline:hover {
+  background-color: var(--sapphire);
+  color: var(--white);
+}
+
+/* =========================================================
+   ABOUT SECTION — sapphire blue + warm taupe theme
+   ========================================================= */
+.about-section {
+  background-color: var(--white);
+  padding-top: 110px;
+}
+
+.about-heading {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 600;
+  color: var(--sapphire);
+  line-height: 1.2;
+  padding-bottom: 14px;
+  border-bottom: 2px solid var(--sapphire);
+  display: inline-block;
+  margin-bottom: 50px;
+}
+
+.about-me-text {
+  font-size: 4rem;
+  font-weight: 700;
+  display: inline-block;
+}
+
+.my-hobbies-text {
+  font-size: 2rem;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.about-features {
+  background-color: var(--warm-taupe-light);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+  padding: 45px 5%;
+  margin-bottom: 90px;
+}
+
+.feature-item {
+  background-color: var(--white);
+  border: 2px solid var(--warm-taupe);
+  border-radius: 10px;
+  padding: 24px 20px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.feature-item:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 22px rgba(15, 82, 186, 0.15);
+  border-color: var(--sapphire);
+}
+
+.feature-icon {
+  font-size: 1.6rem;
+  color: var(--sapphire);
+  margin-bottom: 12px;
+}
+
+.feature-num {
+  display: block;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--sapphire);
+  margin-bottom: 14px;
+}
+
+.feature-text {
+  font-size: 0.85rem;
+  font-weight: 300;
+  color: var(--text-dark);
+  line-height: 1.6;
+}
+
+.about-intro {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 40px;
+  align-items: start;
+}
+
+.about-script {
+  font-family: 'Parisienne', cursive;
+  font-size: 3rem;
+  color: var(--warm-taupe);
+  margin-bottom: -6px;
+}
+
+.about-name {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+  font-weight: 600;
+  color: var(--sapphire);
+  padding-bottom: 14px;
+  border-bottom: 2px solid var(--sapphire);
+  display: inline-block;
+  margin-bottom: 20px;
+}
+
+.about-desc {
+  font-size: 0.9rem;
+  font-weight: 300;
+  color: var(--text-dark);
+  line-height: 1.7;
+  max-width: 380px;
+  margin-bottom: 16px;
+}
+
+.about-photo-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.about-photo-block {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  width: 100%;
+  height: 100%;
+  background-color: var(--sapphire-dark);
+  z-index: 1;
+}
+
+.about-photo {
+  position: relative;
+  width: 100%;
+  height: 380px;
+  object-fit: cover;
+  z-index: 2;
+}
+
+/* DETAILS BOX — replaces the photo on the right side of About */
+.about-details {
+  width: 100%;
+  max-width: none;
+  margin: 0 auto;
+}
+
+.about-details .about-desc {
+  max-width: none;
+}
+
+.about-details-intro {
+  font-size: 0.85rem;
+  font-weight: 300;
+  color: var(--text-dark);
+  line-height: 1.6;
+  margin-bottom: 18px;
+}
+
+.about-details-box {
+  box-sizing: border-box;
+  width: 100%;
+  border: 2px solid var(--sapphire);
+  background-color: transparent;
+  padding: 24px 26px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px 20px;
+}
+
+.detail-item {
+  font-size: 0.85rem;
+  font-weight: 300;
+  color: var(--text-dark);
+  line-height: 1.5;
+}
+
+.detail-label {
+  font-weight: 600;
+  color: var(--sapphire);
+}
+
+/* =========================================================
+   SKILLS SECTION — navy indigo + beige theme
+   ========================================================= */
+.skills-section {
+  background-color: var(--navy-blue);
+  padding: 110px 8% 100px;
+}
+
+.skills-inner {
+  display: grid;
+  grid-template-columns: 1.1fr 0.6fr 1fr;
+  gap: 50px;
+  max-width: 1200px;
+  margin: 0 auto;
+  align-items: start;
+}
+
+.skills-heading {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.25rem;
+  letter-spacing: 2px;
+  color: var(--beige-light);
+  font-weight: 600;
+  margin-bottom: 36px;
+}
+
+.skills-star {
+  color: var(--beige);
+  font-size: 0.9rem;
+  margin-left: 4px;
+}
+
+/* PROCESS COLUMN */
+.process-item {
+  display: flex;
+  gap: 18px;
+  margin-bottom: 28px;
+}
+
+.process-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--beige);
+  min-width: 32px;
+}
+
+.process-title {
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  color: var(--beige-light);
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.process-desc {
+  font-size: 0.8rem;
+  font-weight: 300;
+  color: rgba(240, 233, 221, 0.65);
+  line-height: 1.5;
+  max-width: 220px;
+}
+
+/* CENTER DIVIDER */
+.skills-center {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 100%;
+  padding: 30px 0;
+}
+
+.skills-center-line {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 1px;
+  height: 100%;
+  background: linear-gradient(to bottom, transparent, var(--beige) 20%, var(--beige) 80%, transparent);
+  opacity: 0.4;
+}
+
+.skills-quote {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--beige-light);
+  line-height: 1.7;
+  background-color: var(--navy-blue);
+  padding: 16px 12px;
+  z-index: 1;
+}
+
+/* TOOLS COLUMN */
+.tools-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.tool-badge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: var(--navy-blue-light);
+  border: 1px solid rgba(201, 183, 156, 0.25);
+  border-radius: 8px;
+  padding: 14px 16px;
+  font-size: 0.8rem;
+  letter-spacing: 0.5px;
+  color: var(--beige-light);
+}
+
+.tool-icon-img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+/* Devicon font icons — same size and beige color as the image icons */
+.tool-icon-font {
+  width: 22px;
+  font-size: 22px;
+  line-height: 1;
+  text-align: center;
+  color: var(--beige);
+  flex-shrink: 0;
+}
+
+/* PROGRESS BARS below Tools I Use */
+.skills-bars {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.bar-top {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+  color: var(--beige-light);
+  margin-bottom: 8px;
+}
+
+.bar-track {
+  width: 100%;
+  height: 4px;
+  background-color: rgba(240, 233, 221, 0.15);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  background-color: var(--beige);
+  border-radius: 2px;
+}
+
+/* =========================================================
+   MY WORK / PROJECTS SECTION
+   ========================================================= */
+.work-section {
+  background-color: var(--off-white);
+}
+
+.work-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.work-card {
+  background-color: var(--white);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(27, 42, 74, 0.08);
+  transition: transform 0.3s ease;
+}
+
+.work-card:hover {
+  transform: translateY(-6px);
+}
+
+.work-img {
+  width: 100%;
+  height: 190px;
+  object-fit: cover;
+  border-bottom: 3px solid var(--sage-blue);
+}
+
+.work-info {
+  padding: 20px;
+}
+
+.work-info h3 {
+  color: var(--navy-blue);
+  margin-bottom: 8px;
+}
+
+.work-info p {
+  font-size: 0.9rem;
+  color: var(--navy-blue-light);
+  font-weight: 300;
+  margin-bottom: 15px;
+}
+
+/* =========================================================
+   CONTACT SECTION
+   ========================================================= */
+.contact-section {
+  background-color: var(--navy-blue);
+  color: var(--text-light);
+  text-align: center;
+}
+
+.contact-section .section-title,
+.contact-section .section-subtitle {
+  color: var(--text-light);
+}
+
+.contact-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--navy-blue-light);
+  color: var(--text-light);
+  text-decoration: none;
+  padding: 12px 24px;
+  border-radius: 30px;
+  font-size: 0.95rem;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.contact-item:hover {
+  background-color: var(--sage-blue);
+  color: var(--navy-blue);
+  transform: translateY(-3px);
+}
+
+.contact-icon {
+  font-size: 1.1rem;
+  display: inline-flex;
+}
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+.footer {
+  background-color: var(--navy-blue-light);
+  color: var(--text-light);
+  text-align: center;
+  padding: 30px 8%;
+}
+
+.footer-socials {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+}
+
+.footer-socials a {
+  color: var(--sage-blue-light);
+  text-decoration: none;
+  font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.3s ease;
+}
+
+.footer-socials a:hover {
+  color: var(--white);
+}
+
+.footer p {
+  font-size: 0.8rem;
+  font-weight: 300;
+  color: var(--off-white);
+}
+
+/* =========================================================
+   RESPONSIVE / MOBILE STYLES
+   ========================================================= */
+@media (max-width: 900px) {
+  .skills-inner {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .skills-center {
+    order: 3;
+    padding: 10px 0;
+  }
+  .skills-center-line {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .nav-links {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: var(--navy-blue);
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+  }
+
+  /* Tall enough for the links plus one open dropdown */
+  .nav-links.active {
+    max-height: 600px;
+  }
+
+  .nav-links li {
+    width: 100%;
+  }
+
+  .nav-links a {
+    padding: 15px 0;
+    width: 100%;
+    text-align: center;
+  }
+
+  /* MOBILE DROPDOWNS: the button becomes a full-width row and the
+     menu opens in the flow of the page, pushing the links below it down */
+  .dropdown-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 15px 0;
+  }
+
+  .dropdown-btn::after {
+    display: none;
+  }
+
+  .dropdown-menu {
+    position: static;
+    width: 100%;
+    min-width: 0;
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .nav-links .dropdown-menu a {
+    padding: 12px 0;
+    text-align: center;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
+  .home-bigtitle {
+    letter-spacing: 2px;
+  }
+
+  .home-leftblock {
+    top: 260px;
+  }
+
+  .about-features {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .about-intro {
+    grid-template-columns: 1fr;
+  }
+
+  .about-details-box {
+    grid-template-columns: 1fr;
+  }
+}
